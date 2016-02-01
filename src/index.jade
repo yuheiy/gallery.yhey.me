@@ -18,5 +18,6 @@ html(lang='ja')
       each item in items
         li
           a(href= item.url)
-            img(src= item.thumbnail)
+            img(src= item.thumbnail, width='200', height='150')
+            br
             = item.title
