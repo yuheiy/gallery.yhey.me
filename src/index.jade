@@ -1,0 +1,22 @@
+doctype html
+html(lang='ja')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Website Gallery
+    link(rel='stylesheet', href='./style.css')
+
+  body
+    header
+      h1.logo Website Gallery
+      p.desc
+        = items.length
+        |  websites are collected by 
+        a(href='http://yhey.me/') Yuhei Yasuda.
+
+    ul.list
+      each item in items
+        li
+          a(href= item.url)
+            img(src= item.thumbnail)
+            = item.title

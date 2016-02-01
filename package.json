@@ -1,0 +1,26 @@
+{
+  "name": "gallery.yhey.me",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "build": "node index & cp src/style.css src/CNAME dist",
+    "deploy": "cd dist && git push origin gh-pages",
+    "predeploy": "npm run build && cd dist && git add --all && git commit -m 'Build'",
+    "postinstall": "rm -rf dist && git clone -b gh-pages https://github.com/yuheiy/gallery.yhey.me.git dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuheiy/gallery.yhey.me.git"
+  },
+  "author": "Yuhei Yasuda <yuhei.yasuda1003@gmail.com> (http://yhey.me/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuheiy/gallery.yhey.me/issues"
+  },
+  "homepage": "http://gallery.yhey.me/",
+  "devDependencies": {
+    "jade": "1.11.0",
+    "lodash.sortby": "4.0.1",
+    "request": "2.69.0"
+  }
+}
