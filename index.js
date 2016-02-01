@@ -6,15 +6,14 @@ const jade = require('jade');
 const config = require('./config.json');
 
 const API_URL = 'https://getpocket.com/v3/get';
-const tagName = 'gallery';
 
 request.post({url: API_URL, form: {
   consumer_key: config.consumer_key,
   access_token: config.access_token,
-  tag: tagName
+  tag: config.tag
 }}, (err, res, body) => {
   const data = JSON.parse(body);
-  const list = sortby(data.list, o => parseInt(o.time_updated, 10));
+  const list = sortby(data.list, o => -parseInt(o.time_updated, 10));
   const items = list.map(item => {
     const url = item.resolved_url;
     return {
