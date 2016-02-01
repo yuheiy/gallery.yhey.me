@@ -16,8 +16,9 @@ request.post({url: API_URL, form: {
   const list = sortby(data.list, o => -parseInt(o.time_updated, 10));
   const items = list.map(item => {
     const url = item.resolved_url;
+    const title = item.resolved_title.replace('\n', ' ');
     return {
-      title: item.resolved_title,
+      title: title.length > 40 ? `${title.slice(0, 40)}...` : title,
       url: url,
       thumbnail: `http://capture.heartrails.com/medium/delay=3?${url}`
     };
