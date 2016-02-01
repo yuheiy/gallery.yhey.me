@@ -15,8 +15,8 @@ request.post({url: API_URL, form: {
   const data = JSON.parse(body);
   const list = sortby(data.list, o => -parseInt(o.time_updated, 10));
   const items = list.map(item => {
-    const url = item.resolved_url;
     const title = item.resolved_title.replace('\n', ' ');
+    const url = item.resolved_url;
     return {
       title: title.length > 40 ? `${title.slice(0, 40)}...` : title,
       url: url,
