@@ -24,6 +24,9 @@ request.post({url: API_URL, form: {
     };
   });
 
-  const html = jade.renderFile('src/index.jade', {items: items});
+  const html = jade.renderFile('src/index.jade', {
+    pretty: true,
+    items: items
+  });
   fs.writeFileSync('dist/index.html', html, 'utf8');
 });

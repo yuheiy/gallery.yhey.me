@@ -20,7 +20,7 @@
   "homepage": "http://gallery.yhey.me/",
   "devDependencies": {
     "jade": "1.11.0",
-    "lodash.sortby": "4.0.1",
+    "lodash.sortby": "4.0.2",
     "request": "2.69.0"
   }
 }
