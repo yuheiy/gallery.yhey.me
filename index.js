@@ -51,6 +51,29 @@ const renderHTML = list => {
   });
 };
 
+const removeUnlistedImages = list => {
+  return Promise.resolve()
+    .then(() => {
+      return new Promise(done => {
+        fs.readdir('dist/img', (err, files) => {
+          done(files);
+        });
+      });
+    })
+    .then(files => {
+      const listedFiles = list.map(item => `${item.item_id}.png`);
+      const deletedFiles = files.filter(file =>
+        listedFiles.indexOf(file) === -1);
+
+      return Promise.all(deletedFiles.map(file => {
+        return new Promise(done => {
+          fs.unlink(`dist/img/${file}`, done);
+        });
+      }));
+    })
+    .then(() => list);
+};
+
 const renderImages = list => {
   const script = 'render.js';
   const width = 200;
@@ -87,7 +110,7 @@ const renderImages = list => {
             });
           })
           .then(() => {
-            console.log(`${count}: Captured web page`);
+            console.log(`${count} Captured web page`);
             return easyimg.thumbnail({
               src: filepath.temp,
               dst: filepath.dest,
@@ -97,9 +120,9 @@ const renderImages = list => {
             });
           })
           .then(() => {
-            console.log(`${count}: Generated thumbnail`);
+            console.log(`${count} Generated thumbnail`);
             fs.unlinkSync(filepath.temp);
-            console.log(`${count}: Completed`);
+            console.log(`${count} Completed`);
           });
       }));
     });
@@ -126,7 +149,7 @@ fetchList()
   .then(list => {
     return Promise.all([
       renderHTML(list),
-      renderImages(list)
+      removeUnlistedImages(list).then(renderImages)
     ]);
   })
   .then(() => console.log('Finish'));
