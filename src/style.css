@@ -35,6 +35,9 @@ a {
 
 .list a {
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: .8rem;
   text-align: center;
 }

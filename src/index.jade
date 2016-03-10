@@ -17,7 +17,7 @@ html(lang='ja')
     ul.list
       each item in items
         li
-          a(href= item.url)
+          a(href= item.url, title= item.title)
             img(src= item.thumbnail, width='200', height='150')
             br
             = item.title

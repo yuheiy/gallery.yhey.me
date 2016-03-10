@@ -37,7 +37,7 @@ const renderHTML = list => {
       const url = item.resolved_url;
 
       return {
-        title: title.length > 40 ? `${title.substr(0, 40)}...` : title,
+        title: title,
         url: url,
         thumbnail: `./img/${item.item_id}.png`
       };
