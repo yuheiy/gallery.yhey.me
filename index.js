@@ -6,7 +6,6 @@ const fs = Promise.promisifyAll(require('fs'));
 const sortby = require('lodash.sortby');
 const jade = require('jade');
 const phantomjs = require('phantomjs');
-// const execFileSync = require('child_process').execFileSync;
 const execFileAsync = Promise.promisify(require('child_process').execFile)
 const easyimg = require('easyimage');
 
