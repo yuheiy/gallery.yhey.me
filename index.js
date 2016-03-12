@@ -6,7 +6,8 @@ const fs = Promise.promisifyAll(require('fs'));
 const sortby = require('lodash.sortby');
 const jade = require('jade');
 const phantomjs = require('phantomjs');
-const execFileSync = require('child_process').execFileSync;
+// const execFileSync = require('child_process').execFileSync;
+const execFileAsync = Promise.promisify(require('child_process').execFile)
 const easyimg = require('easyimage');
 
 const fetchList = () => {
@@ -75,15 +76,16 @@ const renderImages = list => {
     const options = [scriptFile, url, filePath.temp];
     const count = `[${i + 1}/${targetFiles.length}]`;
 
-    execFileSync(binPath, options);
-    console.log(`${count} Captured web page`);
+    return execFileAsync(binPath, options).then(() => {
+      console.log(`${count} Captured web page`);
 
-    return easyimg.thumbnail({
-      src: filePath.temp,
-      dst: filePath.dest,
-      width: width,
-      height: height,
-      gravity: 'North'
+      return easyimg.thumbnail({
+        src: filePath.temp,
+        dst: filePath.dest,
+        width: width,
+        height: height,
+        gravity: 'North'
+      });
     }).then(() => {
       console.log(`${count} Generated thumbnail`);
       fs.unlinkSync(filePath.temp);
