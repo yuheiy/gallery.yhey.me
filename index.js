@@ -51,8 +51,8 @@ const renderHTML = list => {
 const renderImages = list => {
   const scriptFile = 'render.js';
   const binPath = phantomjs.path;
-  const width = 200;
-  const height = 150;
+  const width = 640;
+  const height = 360;
   const limit = 10;
 
   const targetFiles = list.filter(item => {
@@ -65,7 +65,9 @@ const renderImages = list => {
     }
   });
 
-  return Promise.map(targetFiles, (file, i) => {
+  let i = 0;
+
+  return Promise.map(targetFiles, file => {
     const fileName = `${file.item_id}.png`;
     const filePath = {
       temp: `.tmp/${fileName}`,
@@ -73,9 +75,10 @@ const renderImages = list => {
     };
     const url = file.resolved_url;
     const options = [scriptFile, url, filePath.temp];
-    const count = `[${i + 1}/${targetFiles.length}]`;
+    let count;
 
     return execFileAsync(binPath, options).then(() => {
+      count = `[${++i}/${targetFiles.length}]`;
       console.log(`${count} Captured web page`);
 
       return easyimg.thumbnail({

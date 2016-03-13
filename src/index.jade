@@ -5,9 +5,12 @@ html(lang='ja')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title Website Gallery
     link(rel='stylesheet', href='./style.css')
+    script(src='./debounce.js')
+    script(src='./adjustGrid.js' async)
+    script(src='./delayLoading.js' async)
 
   body
-    header
+    header.header
       h1.logo Website Gallery
       p.desc
         = items.length
@@ -16,8 +19,6 @@ html(lang='ja')
 
     ul.list
       each item in items
-        li
+        li(data-image= item.thumbnail)
           a(href= item.url, title= item.title)
-            img(src= item.thumbnail, width='200', height='150')
-            br
-            = item.title
+            p= item.title
