@@ -107,15 +107,15 @@ const removeUnlistedImages = list => {
   });
 };
 
-const copyPublic = () => {
-  return fs.readdirAsync('public').then(
+const copy = dir => {
+  return fs.readdirAsync(dir).then(
     files => Promise.map(
       files,
-      file => fs.readFileAsync(`public/${file}`, 'utf8').then(
+      file => fs.readFileAsync(`${dir}/${file}`, 'utf8').then(
         data => fs.writeFileAsync(`dist/${file}`, data, 'utf8')
       )
     )
-  );
+  )
 };
 
 fetchList().then(
@@ -126,4 +126,4 @@ fetchList().then(
   ], promise => promise(list))
 ).then(() => console.log('Finish'));
 
-copyPublic();
+copy('public');

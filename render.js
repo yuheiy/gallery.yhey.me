@@ -16,5 +16,5 @@ page.open(url, function (status) {
       qualify: '100'
     });
     phantom.exit();
-  }, 2000);
+  }, 3000);
 });
