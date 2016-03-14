@@ -36,10 +36,9 @@
   };
 
   var init = function () {
-    var items = document.querySelectorAll('.list li');
-
-    adjustGrid = adjustGrid.bind(null, items);
-    delayLoading = delayLoading.bind(null, items);
+    var images = document.querySelectorAll('[data-image]');
+    var adjustGrid = adjustGrid.bind(null, images);
+    var delayLoading = delayLoading.bind(null, images);
 
     adjustGrid();
     delayLoading();
