@@ -8,7 +8,6 @@
     Array.prototype.slice.call(elms)
       .filter(function (elm) {
         var offsetTop = elm.getBoundingClientRect().top + scrollTop;
-
         return offsetTop > scrollTop && offsetTop < scrollBottom;
       })
       .forEach(function (elm) {
