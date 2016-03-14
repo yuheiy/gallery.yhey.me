@@ -2,37 +2,35 @@
   'use strict';
 
   var adjustGrid = function (elms) {
-    var i;
-    var l = elms.length;
-    var elm;
     var windowWidth = window.innerWidth;
     var minWidth = 320;
     var maxWidth = windowWidth / Math.floor(windowWidth / minWidth);
 
-    for (i = 0; i < l; i++) {
-      elm = elms[i];
+    Array.prototype.forEach.call(elms, function (elm) {
       elm.style.maxWidth = maxWidth + 'px';
-    }
+    });
   };
 
   var delayLoading = function (elms) {
-    var i;
-    var l = elms.length;
-    var elm;
-    var offsetTop;
     var scrollTop = window.pageYOffset;
     var scrollBottom = scrollTop + window.innerHeight;
-    var image;
 
-    for (i = 0; i < l; i++) {
-      elm = elms[i];
-      offsetTop = elm.getBoundingClientRect().top + scrollTop;
+    Array.prototype.slice.call(elms)
+      .filter(function (elm) {
+        var offsetTop = elm.getBoundingClientRect().top + scrollTop;
 
-      if (offsetTop > scrollTop && offsetTop < scrollBottom) {
-        image = elm.dataset.image;
-        elm.style.backgroundImage = 'url(' + image + ')';
-      }
-    }
+        return offsetTop > scrollTop && offsetTop < scrollBottom;
+      })
+      .forEach(function (elm) {
+        var image = elm.dataset.image;
+        var preloader = new Image();
+
+        preloader.addEventListener('load', function () {
+          elm.style.backgroundImage = 'url(' + image + ')';
+          elm.style.opacity = 1;
+        });
+        preloader.src = image;
+      });
   };
 
   var init = function () {
