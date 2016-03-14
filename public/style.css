@@ -11,6 +11,7 @@ a {
 
 .header {
   padding: 1rem;
+  color: #aaa;
   background-color: #222;
 }
 
@@ -26,7 +27,6 @@ a {
   margin-top: .3em;
   margin-bottom: 0;
   font-size: .8rem;
-  color: #aaa;
 }
 
 .list {
