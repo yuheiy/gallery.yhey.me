@@ -12,7 +12,7 @@
   };
 
   var init = function () {
-    var fn = adjustGrid.bind(null, d.querySelectorAll('.list li'));
+    var fn = adjustGrid.bind(null, d.querySelectorAll('.grid-list > li'));
 
     fn();
 

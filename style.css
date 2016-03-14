@@ -9,17 +9,20 @@ a {
   text-decoration: none;
 }
 
+.title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.2rem;
+}
+
 .header {
   padding: 1rem;
   color: #aaa;
   background-color: #222;
 }
 
-.logo {
-  margin-top: 0;
-  margin-bottom: 0;
+.header .title {
   font-weight: normal;
-  font-size: 1.2rem;
   color: #eee;
 }
 
@@ -29,7 +32,7 @@ a {
   font-size: .8rem;
 }
 
-.list {
+.grid-list {
   display: flex;
   flex-wrap: wrap;
   margin-top: 0;
@@ -38,7 +41,7 @@ a {
   list-style: none;
 }
 
-.list li {
+.grid-list > li {
   position: relative;
   flex: 1;
   min-width: 320px;
@@ -49,7 +52,7 @@ a {
   transition: opacity .8s;
 }
 
-.list li::before {
+.grid-list > li::before {
   content: "";
   display: block;
 
@@ -57,7 +60,7 @@ a {
   padding-top: 56.25%;
 }
 
-.list a {
+.grid-list .panel-link {
   position: absolute;
   top: 0;
   left: 0;
@@ -67,15 +70,11 @@ a {
   transition: opacity .3s;
 }
 
-.list a:hover {
+.grid-list .panel-link:hover {
   opacity: 1;
 }
 
-.list a:hover::before {
-  transform: none;
-}
-
-.list a::before {
+.grid-list .panel-link::before {
   content: "";
   position: absolute;
   top: 1rem;
@@ -87,13 +86,15 @@ a {
   transition: transform .3s;
 }
 
-.list p {
+.grid-list .panel-link:hover::before {
+  transform: none;
+}
+
+.grid-list .title {
   position: absolute;
   right: 50%;
   bottom: 50%;
   max-width: 100%;
-  margin-top: 0;
-  margin-bottom: 0;
   padding: 2rem;
   box-sizing: border-box;
   transform: translate(50%,50%);
