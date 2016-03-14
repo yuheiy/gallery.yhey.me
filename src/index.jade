@@ -10,14 +10,14 @@ html(lang='ja')
 
   body
     header.header
-      h1.logo Website Gallery
+      h1.title Website Gallery
       p.desc
         = items.length
         |  websites are collected by 
         a(href='https://yhey.me/') Yuhei Yasuda.
 
-    ul.list
+    ul.grid-list
       each item in items
         li(data-image= item.thumbnail)
-          a(href= item.url, title= item.title)
-            p= item.title
+          a.panel-link(href= item.url, title= item.title)
+            p.title= item.title

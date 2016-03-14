@@ -16,7 +16,7 @@
         var preloader = new Image();
 
         preloader.addEventListener('load', function () {
-          elm.style.backgroundImage = 'url(' + image + ')';
+          elm.style.backgroundImage = 'url("' + image + '")';
           elm.style.opacity = 1;
         });
         preloader.src = image;
