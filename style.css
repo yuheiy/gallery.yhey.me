@@ -43,7 +43,7 @@ a {
 
 .grid-list > li {
   position: relative;
-  flex: 1;
+  flex-grow: 1;
   min-width: 320px;
   background-repeat: no-repeat;
   background-position: center;
