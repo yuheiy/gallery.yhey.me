@@ -11,8 +11,8 @@
         return offsetTop > scrollTop && offsetTop < scrollBottom;
       })
       .forEach(function (elm) {
-        var image = elm.dataset.image;
         var preloader = new Image();
+        var image = elm.dataset.image;
 
         preloader.addEventListener('load', function () {
           elm.style.backgroundImage = 'url("' + image + '")';
@@ -22,13 +22,29 @@
       });
   };
 
+  var throttle = function (fn, delay) {
+    var lastTime = Date.now();
+
+    return function () {
+      var args = arguments;
+      var context = this;
+      var now = Date.now();
+
+      if ((lastTime + delay) <= now) {
+        fn.apply(context, args);
+        lastTime = now;
+      }
+    };
+  };
+
   var init = function () {
     var fn = delayLoading.bind(null, d.querySelectorAll('[data-image]'));
+    var throttled = throttle(fn, 300);
 
     fn();
 
-    w.addEventListener('scroll', fn);
-    w.addEventListener('resize', fn);
+    w.addEventListener('scroll', throttled);
+    w.addEventListener('resize', throttled);
   };
 
   if (d.readyState === 'loading') {

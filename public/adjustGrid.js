@@ -43,12 +43,32 @@
     });
   };
 
+  var debounce = function (fn, delay) {
+    var timeout = null;
+
+    return function () {
+      var args = arguments;
+      var context = this;
+      var delayed = function () {
+        fn.apply(context, args);
+        timeout = null;
+      };
+
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+
+      timeout = setTimeout(delayed, delay);
+    };
+  };
+
   var init = function () {
     var fn = adjustGrid.bind(null, d.querySelectorAll('.grid-list > li'));
+    var debounced = debounce(fn, 300);
 
     fn();
 
-    w.addEventListener('resize', fn);
+    w.addEventListener('resize', debounced);
   };
 
   if (d.readyState === 'loading') {
