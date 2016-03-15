@@ -29,11 +29,11 @@
     var minWidth = 320;
     var col = Math.floor(windowWidth / minWidth);
     var overIndex = l - l % col;
-    var maxWidth = windowWidth / col;
     var filtered = filter(elms, function (elm, i) {
       var isOver = i + 1 > overIndex;
       return isOver;
     });
+    var maxWidth = windowWidth / col;
 
     filtered.matched.forEach(function (elm) {
       elm.style.maxWidth = maxWidth + 'px';
