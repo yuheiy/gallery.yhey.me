@@ -30,17 +30,20 @@
       var args = arguments;
       var context = this;
       var now = Date.now();
-
-      if ((lastTime + delay) <= now) {
+      var delayed = function () {
         fn.apply(context, args);
         lastTime = now;
+      };
+
+      if ((lastTime + delay) <= now) {
+        delayed();
 
         if (timeout) {
           clearTimeout(timeout);
           timeout = null;
         }
       } else if (!timeout) {
-        timeout = setTimeout(fn.bind(context, args), delay);
+        timeout = setTimeout(delayed, delay);
       }
     };
   };
