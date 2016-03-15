@@ -24,6 +24,7 @@
 
   var throttle = function (fn, delay) {
     var lastTime = Date.now();
+    var timeout = null;
 
     return function () {
       var args = arguments;
@@ -33,6 +34,13 @@
       if ((lastTime + delay) <= now) {
         fn.apply(context, args);
         lastTime = now;
+
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+      } else if (!timeout) {
+        timeout = setTimeout(fn.bind(context, args), delay);
       }
     };
   };
