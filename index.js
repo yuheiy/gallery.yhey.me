@@ -1,16 +1,12 @@
 'use strict';
 const Promise = require('bluebird');
-const postAsync = Promise.promisify(require('request').post);
-const config = require('./config.json');
 const fs = Promise.promisifyAll(require('fs-extra'));
-const sortby = require('lodash.sortby');
-const jade = require('jade');
-const phantomjs = require('phantomjs');
-const execFileAsync = Promise.promisify(require('child_process').execFile)
-const easyimg = require('easyimage');
 const del = require('del');
 
 const fetchList = () => {
+  const postAsync = Promise.promisify(require('request').post);
+  const config = require('./config.json');
+  const sortby = require('lodash.sortby');
   const API_URL = 'https://getpocket.com/v3/get';
 
   return postAsync({
@@ -29,9 +25,11 @@ const fetchList = () => {
 };
 
 const renderHTML = list => {
+  const jade = require('jade');
+
   const items = list.map(item => {
     const title = (item.resolved_title || item.given_title)
-      .replace(/\n/g, '');
+      .replace(/\n/g, ' ');
     const url = item.resolved_url;
 
     return {
@@ -50,6 +48,9 @@ const renderHTML = list => {
 };
 
 const renderImages = list => {
+  const phantomjs = require('phantomjs');
+  const execFileAsync = Promise.promisify(require('child_process').execFile)
+  const easyimg = require('easyimage');
   const scriptFile = 'render.js';
   const binPath = phantomjs.path;
   const width = 640;
@@ -89,29 +90,21 @@ const renderImages = list => {
         height: height,
         gravity: 'North'
       });
-    }).then(() => {
-      console.log(`${count} Generated thumbnail`);
-      fs.unlinkSync(filePath.temp);
-      console.log(`${count} Completed`);
-    });
+    }).then(() => console.log(`${count} Generated thumbnail`));
   }, {concurrency: limit})).then(() => fs.removeAsync('.tmp'));
 };
 
 const removeUnlistedImages = list => {
-  return fs.readdirAsync('dist/img').then(files => {
-    const listedFiles = list.map(item => `${item.item_id}.png`);
-    const unlistedFiles = files.filter(
-      file => listedFiles.indexOf(file) === -1
-    );
+  const listedFiles = list.map(item => `${item.item_id}.png`);
+  const patterns = ['dist/img/*']
+    .concat(listedFiles.map(file => `!dist/img/${file}`));
 
-    return Promise.map(
-      unlistedFiles,
-      file => fs.unlinkAsync(`dist/img/${file}`)
-    );
-  });
+  return del(patterns);
 };
 
-del(['dist/*', '!dist/.git', '!dist/img']).then(() => {
+const clean = del.bind(null, ['dist/*', '!dist/.git', '!dist/img']);
+
+clean().then(() => {
   fetchList().then(
     list => Promise.map([
       renderHTML,
