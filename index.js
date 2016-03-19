@@ -2,12 +2,13 @@
 const Promise = require('bluebird');
 const postAsync = Promise.promisify(require('request').post);
 const config = require('./config.json');
-const fs = Promise.promisifyAll(require('fs'));
+const fs = Promise.promisifyAll(require('fs-extra'));
 const sortby = require('lodash.sortby');
 const jade = require('jade');
 const phantomjs = require('phantomjs');
 const execFileAsync = Promise.promisify(require('child_process').execFile)
 const easyimg = require('easyimage');
+const del = require('del');
 
 const fetchList = () => {
   const API_URL = 'https://getpocket.com/v3/get';
@@ -30,13 +31,13 @@ const fetchList = () => {
 const renderHTML = list => {
   const items = list.map(item => {
     const title = (item.resolved_title || item.given_title)
-      .replace('\n', ' ');
+      .replace(/\n/g, '');
     const url = item.resolved_url;
 
     return {
       title: title,
       url: url,
-      thumbnail: `./img/${item.item_id}.png`
+      thumbnail: `/img/${item.item_id}.png`
     };
   });
 
@@ -67,7 +68,7 @@ const renderImages = list => {
 
   let i = 0;
 
-  return Promise.map(targetFiles, file => {
+  return fs.mkdirsAsync('.tmp').then(() => Promise.map(targetFiles, file => {
     const fileName = `${file.item_id}.png`;
     const filePath = {
       temp: `.tmp/${fileName}`,
@@ -93,7 +94,7 @@ const renderImages = list => {
       fs.unlinkSync(filePath.temp);
       console.log(`${count} Completed`);
     });
-  }, {concurrency: limit});
+  }, {concurrency: limit})).then(() => fs.removeAsync('.tmp'));
 };
 
 const removeUnlistedImages = list => {
@@ -110,23 +111,14 @@ const removeUnlistedImages = list => {
   });
 };
 
-const copy = dir => {
-  return fs.readdirAsync(dir).then(
-    files => Promise.map(
-      files,
-      file => fs.readFileAsync(`${dir}/${file}`, 'utf8').then(
-        data => fs.writeFileAsync(`dist/${file}`, data, 'utf8')
-      )
-    )
-  )
-};
+del(['dist/*', '!dist/.git', '!dist/img']).then(() => {
+  fetchList().then(
+    list => Promise.map([
+      renderHTML,
+      renderImages,
+      removeUnlistedImages
+    ], promise => promise(list))
+  ).then(() => console.log('Finish'));
 
-fetchList().then(
-  list => Promise.map([
-    renderHTML,
-    renderImages,
-    removeUnlistedImages
-  ], promise => promise(list))
-).then(() => console.log('Finish'));
-
-copy('public');
+  fs.copy('static', 'dist');
+});

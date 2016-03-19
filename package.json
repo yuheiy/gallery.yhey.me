@@ -4,8 +4,6 @@
   "description": "",
   "scripts": {
     "build": "node index",
-    "prebuild": "mkdir -p .tmp",
-    "postbuild": "rm -rf .tmp",
     "deploy": "cd dist && git push origin gh-pages",
     "predeploy": "npm run build && cd dist && git add --all && git commit -m 'Build'",
     "postinstall": "rm -rf dist && git clone -b gh-pages https://github.com/yuheiy/gallery.yhey.me.git dist"
@@ -22,7 +20,9 @@
   "homepage": "http://gallery.yhey.me/",
   "devDependencies": {
     "bluebird": "3.3.4",
+    "del": "2.2.0",
     "easyimage": "2.1.0",
+    "fs-extra": "0.26.7",
     "jade": "1.11.0",
     "lodash.sortby": "4.2.1",
     "phantomjs": "2.1.3",
