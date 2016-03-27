@@ -30,7 +30,7 @@ const renderHTML = list => {
   const items = list.map(item => {
     const title = (item.resolved_title || item.given_title)
       .replace(/\n/g, ' ');
-    const url = item.resolved_url;
+    const url = item.resolved_url || item.given_url;
 
     return {
       title: title,
