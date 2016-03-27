@@ -46,6 +46,7 @@ a {
   position: relative;
   flex-grow: 1;
   min-width: 320px;
+  background-color: #fff;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
