@@ -18,6 +18,6 @@ html(lang='ja')
 
     ul.grid-list
       each item in items
-        li(data-image= item.thumbnail)
+        li(data-src= item.thumbnail)
           a.panel-link(href= item.url, title= item.title)
             p.title= item.title
