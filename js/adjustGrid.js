@@ -6,17 +6,17 @@
     var l = arrayLike.length;
     var item;
     var result = {
-      matched: [],
-      unmatched: []
+      matches: [],
+      unmatches: []
     };
 
     for (i = 0; i < l; i++) {
       item = arrayLike[i];
 
       if (cb(item, i)) {
-        result.matched.push(item);
+        result.matches.push(item);
       } else {
-        result.unmatched.push(item);
+        result.unmatches.push(item);
       }
     }
 
@@ -35,10 +35,10 @@
     });
     var maxWidth = windowWidth / col;
 
-    filtered.matched.forEach(function (elm) {
+    filtered.matches.forEach(function (elm) {
       elm.style.maxWidth = maxWidth + 'px';
     });
-    filtered.unmatched.forEach(function (elm) {
+    filtered.unmatches.forEach(function (elm) {
       elm.style.maxWidth = '';
     });
   };

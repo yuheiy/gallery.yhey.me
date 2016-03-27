@@ -12,13 +12,13 @@
       })
       .forEach(function (elm) {
         var preloader = new Image();
-        var image = elm.dataset.image;
+        var src = elm.dataset.src;
 
         preloader.addEventListener('load', function () {
-          elm.style.backgroundImage = 'url("' + image + '")';
+          elm.style.backgroundImage = 'url("' + src + '")';
           elm.style.opacity = 1;
         });
-        preloader.src = image;
+        preloader.src = src;
       });
   };
 
@@ -49,7 +49,7 @@
   };
 
   var init = function () {
-    var fn = delayLoading.bind(null, d.querySelectorAll('[data-image]'));
+    var fn = delayLoading.bind(null, d.querySelectorAll('[data-src]'));
     var throttled = throttle(fn, 300);
 
     fn();
