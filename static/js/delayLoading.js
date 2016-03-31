@@ -7,8 +7,16 @@
 
     Array.prototype.slice.call(elms)
       .filter(function (elm) {
+        var cssUrlImage = 'url("' + elm.dataset.src + '")';
+        var isLoaded = elm.style.backgroundImage === cssUrlImage;
+
+        return !isLoaded;
+      })
+      .filter(function (elm) {
         var offsetTop = elm.getBoundingClientRect().top + scrollTop;
-        return offsetTop > scrollTop && offsetTop < scrollBottom;
+        var isShown = offsetTop > scrollTop && offsetTop < scrollBottom;
+
+        return isShown;
       })
       .forEach(function (elm) {
         var preloader = new Image();
