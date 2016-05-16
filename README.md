@@ -2,8 +2,9 @@
 
 ## Dependencies
 
+- phantomjs
 - imagemagick
 
 ```
-$ brew install imagemagick
+$ brew install phantomjs imagemagick
 ```
