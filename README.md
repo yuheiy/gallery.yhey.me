@@ -4,7 +4,9 @@
 
 - phantomjs
 - imagemagick
+- npm
 
 ```
 $ brew install phantomjs imagemagick
+$ npm install
 ```
