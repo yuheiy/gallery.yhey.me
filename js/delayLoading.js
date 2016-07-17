@@ -7,20 +7,17 @@
 
     Array.prototype.slice.call(elms)
       .filter(function (elm) {
-        var cssUrlImage = 'url("' + elm.dataset.src + '")';
-        var isLoaded = elm.style.backgroundImage === cssUrlImage;
-
+        var isLoaded = elm.style.backgroundImage;
         return !isLoaded;
       })
       .filter(function (elm) {
         var offsetTop = elm.getBoundingClientRect().top + scrollTop;
         var isShown = offsetTop > scrollTop && offsetTop < scrollBottom;
-
         return isShown;
       })
       .forEach(function (elm) {
         var preloader = new Image();
-        var src = elm.dataset.src;
+        var src = elm.dataset.backgroundImage;
 
         preloader.addEventListener('load', function () {
           elm.style.backgroundImage = 'url("' + src + '")';
@@ -57,7 +54,7 @@
   };
 
   var init = function () {
-    var fn = delayLoading.bind(null, d.querySelectorAll('[data-src]'));
+    var fn = delayLoading.bind(null, d.querySelectorAll('[data-background-image]'));
     var throttled = throttle(fn, 300);
 
     fn();
