@@ -95,6 +95,7 @@ const fetchOrCopyImages = list => {
   };
   const resizeImages = () => {
     const easyimg = require('easyimage');
+    const rimraf = require('rimraf');
     const width = 640;
     const height = 360;
     const addedFiles = addedList.map(({fileName}) => fileName);
@@ -111,7 +112,8 @@ const fetchOrCopyImages = list => {
         height,
         gravity: 'North'
       }));
-    }), Promise.resolve());
+    }), Promise.resolve())
+    .then(() => rimraf.sync('tmp/'));
   };
   const copyCache = () => Promise.map(
     cachedList, ({destPath, cachePath}
