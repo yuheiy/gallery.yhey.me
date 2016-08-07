@@ -1,117 +1,168 @@
 'use strict';
 const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs-extra'));
-const del = require('del');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
 
 const fetchList = () => {
   const postAsync = Promise.promisify(require('request').post);
-  const config = require('./config.json');
-  const sortby = require('lodash.sortby');
+  const {consumer_key, access_token, tag} = require('./config.json');
   const API_URL = 'https://getpocket.com/v3/get';
 
   return postAsync({
     url: API_URL,
     form: {
-      consumer_key: config.consumer_key,
-      access_token: config.access_token,
-      tag: config.tag
+      consumer_key,
+      access_token,
+      tag
     }
-  }).then(args => {
-    const data = JSON.parse(args.body);
-    const list = sortby(data.list, o => -parseInt(o.time_updated, 10));
-
-    return list;
-  });
+  }).then(({body}) => JSON.parse(body).list);
 };
 
 const renderHTML = list => {
   const jade = require('jade');
+  const processList = list => {
+    const sortby = require('lodash.sortby');
+    const result = sortby(
+      list, ({time_updated}) => - parseInt(time_updated, 10)
+    ).map(({
+      resolved_title,
+      given_title,
+      resolved_url,
+      given_url,
+      item_id
+    }) => ({
+      title: (resolved_title || given_title).replace(/\n/g, ' '),
+      url: resolved_url || given_url,
+      thumbnail: `/img/${item_id}.png`
+    }));
 
-  const items = list.map(item => {
-    const title = (item.resolved_title || item.given_title)
-      .replace(/\n/g, ' ');
-    const url = item.resolved_url || item.given_url;
-
-    return {
-      title: title,
-      url: url,
-      thumbnail: `/img/${item.item_id}.png`
-    };
-  });
-
-  const html = jade.renderFile('src/index.jade', {
+    return result;
+  };
+  list = processList(list);
+  const htmlString = jade.renderFile('src/index.jade', {
     pretty: true,
-    items: items
+    list
   });
 
-  return fs.writeFileAsync('dist/index.html', html, 'utf8');
+  mkdirp.sync('dist/');
+  return fs.writeFileSync('dist/index.html', htmlString, 'utf8');
 };
 
-const renderImages = list => {
-  const phantomjs = require('phantomjs');
-  const execFileAsync = Promise.promisify(require('child_process').execFile)
-  const easyimg = require('easyimage');
-  const scriptFile = 'render.js';
-  const binPath = phantomjs.path;
-  const width = 640;
-  const height = 360;
-  const limit = 10;
-
-  const targetFiles = list.filter(item => {
-    const filePath = `dist/img/${item.item_id}.png`;
-
+const fetchOrCopyImages = list => {
+  const processList = list => Object.keys(list).map(key => {
+    const {item_id, resolved_id, resolved_url, given_url} = list[key];
+    const id = item_id || resolved_id;
+    const fileName = `${id}.png`;
+    return {
+      id,
+      url: resolved_url || given_url,
+      fileName,
+      destPath: `dist/img/${fileName}`,
+      tempPath: `tmp/${fileName}`,
+      cachePath: `cache/${fileName}`
+    };
+  });
+  list = processList(list);
+  const addedList = list.filter(({cachePath}) => {
     try {
-      return !fs.statSync(filePath).isFile();
+      return !fs.statSync(cachePath).isFile();
     } catch (e) {
       return true;
     }
   });
+  const cachedList = list.filter(({cachePath}) => {
+    try {
+      return fs.statSync(cachePath).isFile();
+    } catch (e) {
+      return false;
+    }
+  });
+  const fetchScreenShots = () => {
+    const Nightmare = require('nightmare');
+    const nightmare = Nightmare({
+      width: 1920,
+      height: 1080
+    });
 
-  let i = 0;
+    mkdirp.sync('tmp/');
+    return addedList.reduce((process, {url, tempPath}) => process
+      .goto(url)
+      .wait('body')
+      .wait(3000)
+      .screenshot(tempPath)
+    , nightmare)
+    .end();
+  };
+  const resizeImages = () => {
+    const easyimg = require('easyimage');
+    const width = 640;
+    const height = 360;
+    const addedFiles = addedList.map(({fileName}) => fileName);
+    const targetFiles = fs.readdirSync('tmp/')
+    .filter(file => addedFiles.includes(file));
 
-  return fs.mkdirsAsync('.tmp').then(() => Promise.map(targetFiles, file => {
-    const fileName = `${file.item_id}.png`;
-    const filePath = {
-      temp: `.tmp/${fileName}`,
-      dest: `dist/img/${fileName}`
-    };
-    const url = file.resolved_url;
-    const options = [scriptFile, url, filePath.temp];
-    let count;
-
-    return execFileAsync(binPath, options).then(() => {
-      count = `[${++i}/${targetFiles.length}]`;
-      console.log(`${count} Captured web page`);
-
-      return easyimg.thumbnail({
-        src: filePath.temp,
-        dst: filePath.dest,
-        width: width,
-        height: height,
+    return targetFiles.reduce((seq, file) => seq.then(() => {
+      const {tempPath, destPath, cachePath} = addedList
+      .find(({fileName}) => file === fileName);
+      return Promise.map([destPath, cachePath], dst => easyimg.thumbnail({
+        src: tempPath,
+        dst,
+        width,
+        height,
         gravity: 'North'
-      });
-    }).then(() => console.log(`${count} Generated thumbnail`));
-  }, {concurrency: limit})).then(() => fs.removeAsync('.tmp'));
+      }));
+    }), Promise.resolve());
+  };
+  const copyCache = () => Promise.map(
+    cachedList, ({destPath, cachePath}
+  ) => new Promise(done => {
+    ncp(cachePath, destPath, err => {
+      if (err) {
+        return console.error(err);
+      }
+      done();
+    });
+  }));
+
+  mkdirp.sync('dist/img/');
+  mkdirp.sync('cache/');
+  return Promise.all([
+    fetchScreenShots(addedList).then(resizeImages),
+    copyCache()
+  ]);
 };
 
-const removeUnlistedImages = list => {
-  const listedFiles = list.map(item => `${item.item_id}.png`);
-  const patterns = ['dist/img/*']
-    .concat(listedFiles.map(file => `!dist/img/${file}`));
-
-  return del(patterns);
+const clean = () => {
+  const del = require('del');
+  return del(['dist/*', '!dist/.git'], {dot: true});
 };
 
-const clean = del.bind(null, ['dist/*', '!dist/.git', '!dist/img']);
+const copy = () => {
+  const glob = require('glob');
+  const {ncp} = require('ncp');
+  const {basename} = require('path');
+  const files = ['src/css/**', 'src/js/**', 'static/**']
+  .map(pattern => glob.sync(pattern, {nodir: true}))
+  .reduce((prev, current) => prev.concat(current));
 
-clean().then(() => {
-  fetchList().then(
-    list => Promise.map([
-      renderHTML,
-      renderImages,
-      removeUnlistedImages
-    ], promise => promise(list))
-  ).then(() => console.log('Finish'));
+  mkdirp.sync('dist/');
+  return Promise.map(files, file => new Promise(done => {
+    ncp(file, `dist/${basename(file)}`, err => {
+      if (err) {
+        return console.error(err);
+      }
+      done();
+    });
+  }));
+};
 
-  fs.copy('static', 'dist');
-});
+clean()
+.then(() => Promise.all([
+  fetchList()
+  .then(list => Promise.map([
+    renderHTML,
+    fetchOrCopyImages
+  ], cb => cb(list))),
+  copy()
+]))
+.then(() => console.log('Finish'));

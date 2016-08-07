@@ -8,11 +8,10 @@
 
 ## Dependencies
 
-- phantomjs
-- imagemagick
-- npm
+- ImageMagick
+- Node.js
 
 ```bash
-$ brew install phantomjs imagemagick
+$ brew install imagemagick
 $ npm install
 ```
