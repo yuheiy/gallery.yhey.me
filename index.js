@@ -2,6 +2,7 @@
 const Promise = require('bluebird');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
+const {ncp} = require('ncp');
 
 const fetchList = () => {
   const postAsync = Promise.promisify(require('request').post);
@@ -116,15 +117,15 @@ const fetchOrCopyImages = list => {
     });
   };
   const copyCachedFiles = () => Promise.map(
-    cachedList, ({destPath, cachePath}
-  ) => new Promise(done => {
-    ncp(cachePath, destPath, err => {
-      if (err) {
-        return console.error(err);
-      }
-      done();
-    });
-  }));
+    cachedList, ({destPath, cachePath}) => new Promise(done => {
+      ncp(cachePath, destPath, err => {
+        if (err) {
+          return console.error(err);
+        }
+        done();
+      });
+    })
+  );
 
   ['dist/img/', 'cache/'].forEach(dir => mkdirp.sync(dir));
   return Promise.all([
@@ -140,7 +141,6 @@ const clean = () => {
 
 const copy = () => {
   const glob = require('glob');
-  const {ncp} = require('ncp');
   const {basename} = require('path');
   const files = ['src/css/**', 'src/js/**', 'static/**']
   .map(pattern => glob.sync(pattern, {nodir: true}))
