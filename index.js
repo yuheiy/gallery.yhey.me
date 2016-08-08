@@ -83,39 +83,38 @@ const fetchOrCopyImages = list => {
       width: 1920,
       height: 1080
     });
+    const easyimg = require('easyimage');
+    const width = 640;
+    const height = 360;
+    const gravity = 'North';
 
     mkdirp.sync('tmp/');
-    return addedList.reduce((process, {url, tempPath}) => process
+    return addedList.reduce((promise, {
+      url,
+      tempPath,
+      destPath,
+      cachePath
+    }) => promise.then(
+      () => nightmare
       .goto(url)
       .wait('body')
       .wait(3000)
       .screenshot(tempPath)
-    , nightmare)
-    .end();
-  };
-  const resizeImages = () => {
-    const easyimg = require('easyimage');
-    const rimraf = require('rimraf');
-    const width = 640;
-    const height = 360;
-    const addedFiles = addedList.map(({fileName}) => fileName);
-    const targetFiles = fs.readdirSync('tmp/')
-    .filter(file => addedFiles.includes(file));
-
-    return targetFiles.reduce((seq, file) => seq.then(() => {
-      const {tempPath, destPath, cachePath} = addedList
-      .find(({fileName}) => file === fileName);
-      return Promise.map([destPath, cachePath], dst => easyimg.thumbnail({
+    ).then(
+      () => Promise.map([destPath, cachePath], dst => easyimg.thumbnail({
         src: tempPath,
         dst,
         width,
         height,
-        gravity: 'North'
-      }));
-    }), Promise.resolve())
-    .then(() => rimraf.sync('tmp/'));
+        gravity
+      }))
+    ).then(() => fs.unlinkSync(tempPath)), Promise.resolve())
+    .then(() => {
+      fs.rmdirSync('tmp/');
+      return nightmare.end();
+    });
   };
-  const copyCache = () => Promise.map(
+  const copyCachedFiles = () => Promise.map(
     cachedList, ({destPath, cachePath}
   ) => new Promise(done => {
     ncp(cachePath, destPath, err => {
@@ -126,11 +125,10 @@ const fetchOrCopyImages = list => {
     });
   }));
 
-  mkdirp.sync('dist/img/');
-  mkdirp.sync('cache/');
+  ['dist/img/', 'cache/'].forEach(dir => mkdirp.sync(dir));
   return Promise.all([
-    fetchScreenShots(addedList).then(resizeImages),
-    copyCache()
+    fetchScreenShots(),
+    copyCachedFiles()
   ]);
 };
 
