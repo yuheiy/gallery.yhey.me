@@ -81,7 +81,8 @@ const fetchOrCopyImages = list => {
     const Nightmare = require('nightmare');
     const nightmare = Nightmare({
       width: 1920,
-      height: 1080
+      height: 1080,
+      show: true
     });
     const easyimg = require('easyimage');
     const width = 640;
