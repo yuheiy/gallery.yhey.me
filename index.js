@@ -146,7 +146,8 @@ const compileCSS = () => {
       outputStyle: 'compressed'
     }, (err, result) => err ? fail(err) : done(result.css.toString()))
   })
-  .then(css => fs.writeFileSync('dist/style.css', css, 'utf8'));
+  .then(css => fs.writeFileSync('dist/style.css', css, 'utf8'))
+  .catch(err => console.error(err));
 };
 
 const copy = () => {
