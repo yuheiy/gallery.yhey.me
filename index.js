@@ -138,10 +138,21 @@ const clean = () => {
   return del(['dist/*', '!dist/.git'], {dot: true});
 };
 
+const compileCSS = () => {
+  return new Promise((done, fail) => {
+    const sass = require('node-sass');
+    sass.render({
+      file: 'src/css/style.scss',
+      outputStyle: 'compressed'
+    }, (err, result) => err ? fail(err) : done(result.css.toString()))
+  })
+  .then(css => fs.writeFileSync('dist/style.css', css, 'utf8'));
+};
+
 const copy = () => {
   const glob = require('glob');
   const {basename} = require('path');
-  const files = ['src/css/**', 'src/js/**', 'static/**']
+  const files = ['src/js/**', 'static/**']
   .map(pattern => glob.sync(pattern, {nodir: true}))
   .reduce((prev, current) => prev.concat(current));
 
@@ -158,6 +169,7 @@ clean()
     renderHTML,
     fetchOrCopyImages
   ], cb => cb(list))),
+  compileCSS(),
   copy()
 ]))
 .then(() => console.log('Finish'));

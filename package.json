@@ -17,6 +17,7 @@
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "nightmare": "^2.6.0",
+    "node-sass": "^3.8.0",
     "request": "^2.74.0"
   },
   "engines": {
