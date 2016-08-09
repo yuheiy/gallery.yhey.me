@@ -1,31 +1,26 @@
 {
-  "name": "gallery.yhey.me",
-  "version": "0.0.1",
-  "description": "",
+  "private": true,
   "scripts": {
-    "build": "node index",
-    "deploy": "cd dist && git push origin gh-pages",
-    "predeploy": "npm run build && cd dist && git add --all && git commit -m 'Build'",
-    "postinstall": "rm -rf dist && git clone -b gh-pages https://github.com/yuheiy/gallery.yhey.me.git dist"
+    "build": "node index.js",
+    "deploy": "cd dist/ && git push origin gh-pages",
+    "predeploy": "npm run build && cd dist/ && git add --all && git commit -m \"Build\"",
+    "postinstall": "rm -rf dist/ && git clone -b gh-pages https://github.com/yuheiy/gallery.yhey.me.git dist/"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yuheiy/gallery.yhey.me.git"
-  },
-  "author": "Yuhei Yasuda <yuhei.yasuda1003@gmail.com> (http://yhey.me/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yuheiy/gallery.yhey.me/issues"
-  },
-  "homepage": "http://gallery.yhey.me/",
+  "dependencies": {},
   "devDependencies": {
-    "bluebird": "3.4.1",
-    "del": "2.2.1",
-    "easyimage": "2.1.0",
-    "fs-extra": "0.30.0",
-    "jade": "1.11.0",
-    "lodash.sortby": "4.5.0",
-    "phantomjs": "2.1.7",
-    "request": "2.73.0"
+    "bluebird": "^3.4.1",
+    "del": "^2.2.1",
+    "easyimage": "^2.1.0",
+    "glob": "^7.0.5",
+    "jade": "^1.11.0",
+    "lodash.sortby": "^4.6.1",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "nightmare": "^2.6.0",
+    "node-sass": "^3.8.0",
+    "request": "^2.74.0"
+  },
+  "engines": {
+    "node": ">=6.0.0"
   }
 }
