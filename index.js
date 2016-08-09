@@ -1,8 +1,5 @@
 'use strict';
-
-global.Promise = require('bluebird');
-Promise.config({cancellation: true});
-
+const Promise = require('bluebird');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const {ncp} = require('ncp');
@@ -120,17 +117,12 @@ const fetchOrCopyImages = list => {
       return nightmare.end();
     }).catch(err => {
       console.error(err);
-      nightmare.cancel(); // methods of bluebird
+      return nightmare.end();
     });
   };
   const copyCachedFiles = () => Promise.map(
-    cachedList, ({destPath, cachePath}) => new Promise(done => {
-      ncp(cachePath, destPath, err => {
-        if (err) {
-          return console.error(err);
-        }
-        done();
-      });
+    cachedList, ({destPath, cachePath}) => new Promise((done, fail) => {
+      ncp(cachePath, destPath, err => err ? fail(err) : done());
     })
   );
 
