@@ -1,5 +1,8 @@
 'use strict';
-const Promise = require('bluebird');
+
+global.Promise = require('bluebird');
+Promise.config({cancellation: true});
+
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const {ncp} = require('ncp');
@@ -46,7 +49,7 @@ const renderHTML = list => {
   });
 
   mkdirp.sync('dist/');
-  return fs.writeFileSync('dist/index.html', htmlString, 'utf8');
+  fs.writeFileSync('dist/index.html', htmlString, 'utf8');
 };
 
 const fetchOrCopyImages = list => {
@@ -83,6 +86,7 @@ const fetchOrCopyImages = list => {
     const nightmare = Nightmare({
       width: 1920,
       height: 1080,
+      loadTimeout: 30000,
       show: true
     });
     const easyimg = require('easyimage');
@@ -114,6 +118,9 @@ const fetchOrCopyImages = list => {
     .then(() => {
       fs.rmdirSync('tmp/');
       return nightmare.end();
+    }).catch(err => {
+      console.error(err);
+      nightmare.cancel(); // methods of bluebird
     });
   };
   const copyCachedFiles = () => Promise.map(
@@ -147,13 +154,8 @@ const copy = () => {
   .reduce((prev, current) => prev.concat(current));
 
   mkdirp.sync('dist/');
-  return Promise.map(files, file => new Promise(done => {
-    ncp(file, `dist/${basename(file)}`, err => {
-      if (err) {
-        return console.error(err);
-      }
-      done();
-    });
+  return Promise.map(files, file => new Promise((done, fail) => {
+    ncp(file, `dist/${basename(file)}`, err => err ? fail(err) : done());
   }));
 };
 
