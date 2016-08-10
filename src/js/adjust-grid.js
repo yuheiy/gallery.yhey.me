@@ -3,6 +3,7 @@
 const debounce = require('lodash.debounce');
 
 const adjustGrid = cols => {
+  cols = Array.from(cols);
   const gridCols = cols.length;
   const windowWidth = window.innerWidth;
   const minWidth = 320;
@@ -11,12 +12,12 @@ const adjustGrid = cols => {
   const maxWidth = windowWidth / gridColsPerRow;
 
   // reset style of all elements
-  Array.from(cols)
+  cols
   .filter(el => !!el.style.maxWidth)
   .forEach(el => el.style.maxWidth = '');
 
   // set style of target elements
-  Array.from(cols)
+  cols
   .filter((el, i) => (i + 1) > startIndexOfProtrudedCol)
   .forEach(el => el.style.maxWidth = `${maxWidth}px`);
 };
