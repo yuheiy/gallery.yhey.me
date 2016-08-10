@@ -42,7 +42,7 @@ a {
   padding-left: 0;
   list-style: none;
 
-  .item {
+  > li {
     position: relative;
     flex-grow: 1;
     min-width: 320px;
@@ -67,10 +67,8 @@ a {
     bottom: 0;
     left: 0;
 
-    &:hover {
-      .title {
-        opacity: 0;
-      }
+    &:hover .title {
+      opacity: 0;
     }
   }
 
@@ -91,11 +89,5 @@ a {
     white-space: nowrap;
     background-color: rgba($black,.8);
     transition: opacity .5s;
-  }
-
-  .dummy {
-    flex-grow: 1;
-    height: 0;
-    visibility: hidden;
   }
 }

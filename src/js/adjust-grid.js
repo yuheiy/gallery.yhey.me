@@ -1,19 +1,30 @@
 'use strict';
 // adjust grid of flexbox
-const range = require('lodash.range');
+const debounce = require('lodash.debounce');
 
-const adjustGrid = () => {
-  const list = document.querySelector('.grid-list');
-  const maxGridCols = list.children.length;
-  const documentFragment = document.createDocumentFragment();
+const adjustGrid = cols => {
+  const gridCols = cols.length;
+  const windowWidth = window.innerWidth;
+  const minWidth = 320;
+  const gridColsPerRow = Math.floor(windowWidth / minWidth);
+  const startIndexOfProtrudedCol = gridCols - (gridCols % gridColsPerRow);
+  const maxWidth = windowWidth / gridColsPerRow;
 
-  range(maxGridCols).forEach(() => {
-    const dummy = document.createElement('li');
-    dummy.classList.add('dummy');
-    documentFragment.appendChild(dummy);
-  });
+  // reset style of all elements
+  Array.from(cols)
+  .filter(el => !!el.style.maxWidth)
+  .forEach(el => el.style.maxWidth = '');
 
-  list.appendChild(documentFragment);
+  // set style of target elements
+  Array.from(cols)
+  .filter((el, i) => (i + 1) > startIndexOfProtrudedCol)
+  .forEach(el => el.style.maxWidth = `${maxWidth}px`);
 };
 
-module.exports = adjustGrid;
+module.exports = () => {
+  const cols = document.querySelectorAll('.grid-list > li');
+  const fn = adjustGrid.bind(null, cols);
+
+  fn();
+  window.addEventListener('resize', debounce(fn, 150));
+};
