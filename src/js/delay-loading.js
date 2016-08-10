@@ -17,7 +17,7 @@ const delayLoading = () => {
       loadedElements.add(target);
       preloadImage(target.dataset.backgroundImage)
       .then(url => {
-        target.style.backgroundImage = `url(${url})`;
+        target.style.backgroundImage = `url("${url}")`;
         target.style.opacity = 1;
       });
     });
