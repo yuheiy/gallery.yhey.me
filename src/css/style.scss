@@ -42,7 +42,7 @@ a {
   padding-left: 0;
   list-style: none;
 
-  > li {
+  .item {
     position: relative;
     flex-grow: 1;
     min-width: 320px;
