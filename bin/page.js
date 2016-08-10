@@ -5,7 +5,7 @@ const mkdirp = require('mkdirp');
 
 const fetchList = () => {
   const postAsync = Promise.promisify(require('request').post);
-  const {consumer_key, access_token, tag} = require('./config.json');
+  const {consumer_key, access_token, tag} = require('../config.json');
   const API_URL = 'https://getpocket.com/v3/get';
 
   return postAsync({
@@ -132,12 +132,9 @@ const fetchOrCopyImages = list => {
   ]);
 };
 
-clean()
-.then(() => Promise.all([
-  fetchList()
-  .then(list => Promise.map([
-    renderHTML,
-    fetchOrCopyImages
-  ], cb => cb(list)))
-]))
+fetchList()
+.then(list => Promise.map([
+  renderHTML,
+  fetchOrCopyImages
+], cb => cb(list)))
 .then(() => console.log('Finish'));
