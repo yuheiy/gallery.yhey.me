@@ -2,7 +2,6 @@
 const Promise = require('bluebird');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
-const {ncp} = require('ncp');
 
 const fetchList = () => {
   const postAsync = Promise.promisify(require('request').post);
@@ -45,11 +44,11 @@ const renderHTML = list => {
     list
   });
 
-  mkdirp.sync('dist/');
   fs.writeFileSync('dist/index.html', htmlString, 'utf8');
 };
 
 const fetchOrCopyImages = list => {
+  const {ncp} = require('ncp');
   const processList = list => Object.keys(list).map(key => {
     const {item_id, resolved_id, resolved_url, given_url} = list[key];
     const id = item_id || resolved_id;
@@ -133,44 +132,12 @@ const fetchOrCopyImages = list => {
   ]);
 };
 
-const clean = () => {
-  const del = require('del');
-  return del(['dist/*', '!dist/.git'], {dot: true});
-};
-
-const compileCSS = () => {
-  return new Promise((done, fail) => {
-    const sass = require('node-sass');
-    sass.render({
-      file: 'src/css/style.scss',
-      outputStyle: 'compressed'
-    }, (err, result) => err ? fail(err) : done(result.css.toString()))
-  })
-  .then(css => fs.writeFileSync('dist/style.css', css, 'utf8'))
-  .catch(err => console.error(err));
-};
-
-const copy = () => {
-  const glob = require('glob');
-  const {basename} = require('path');
-  const files = ['src/js/**', 'static/**']
-  .map(pattern => glob.sync(pattern, {nodir: true}))
-  .reduce((prev, current) => prev.concat(current));
-
-  mkdirp.sync('dist/');
-  return Promise.map(files, file => new Promise((done, fail) => {
-    ncp(file, `dist/${basename(file)}`, err => err ? fail(err) : done());
-  }));
-};
-
 clean()
 .then(() => Promise.all([
   fetchList()
   .then(list => Promise.map([
     renderHTML,
     fetchOrCopyImages
-  ], cb => cb(list))),
-  compileCSS(),
-  copy()
+  ], cb => cb(list)))
 ]))
 .then(() => console.log('Finish'));

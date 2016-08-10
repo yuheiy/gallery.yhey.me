@@ -92,4 +92,9 @@ a {
     background-color: rgba($black,.8);
     transition: opacity .5s;
   }
+
+  .dummy {
+    height: 0;
+    visibility: hidden;
+  }
 }

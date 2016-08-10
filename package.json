@@ -1,24 +1,38 @@
 {
   "private": true,
   "scripts": {
-    "build": "node index.js",
+    "clean": "node bin/clean.js",
+    "copy": "cp -r static/ dist/",
+    "build:page": "node bin/page.js",
+    "build:js": "browserify -t babelify src/js/main.js | uglifyjs -c -m > dist/bundle.js",
+    "build:css": "node-sass src/css/style.scss dist/style.css --output-style compressed",
+    "build": "npm-run-all clean -p build:* copy",
     "deploy": "cd dist/ && git push origin gh-pages",
-    "predeploy": "npm run build && cd dist/ && git add --all && git commit -m \"Build\"",
+    "predeploy": "npm run build && cd dist/ && git add --all && git commit -m 'Build'",
     "postinstall": "rm -rf dist/ && git clone -b gh-pages https://github.com/yuheiy/gallery.yhey.me.git dist/"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babel-runtime": "^6.11.6",
+    "intersection-observer": "^0.1.1",
+    "lodash.range": "^3.1.7"
+  },
   "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.12.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babelify": "^7.3.0",
     "bluebird": "^3.4.1",
+    "browserify": "^13.1.0",
     "del": "^2.2.1",
     "easyimage": "^2.1.0",
-    "glob": "^7.0.5",
     "jade": "^1.11.0",
     "lodash.sortby": "^4.6.1",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "nightmare": "^2.6.0",
     "node-sass": "^3.8.0",
-    "request": "^2.74.0"
+    "npm-run-all": "^2.3.0",
+    "request": "^2.74.0",
+    "uglify-js": "^2.7.0"
   },
   "engines": {
     "node": ">=6.0.0"
