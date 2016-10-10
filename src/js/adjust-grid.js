@@ -1,9 +1,8 @@
-'use strict';
 // adjust grid of flexbox
-const debounce = require('lodash.debounce');
+'use strict';
 
 const adjustGrid = cols => {
-  cols = Array.from(cols);
+  cols = [...cols];
   const gridCols = cols.length;
   const windowWidth = window.innerWidth;
   const minWidth = 320;
@@ -13,13 +12,13 @@ const adjustGrid = cols => {
 
   // reset style of all elements
   cols
-  .filter(el => !!el.style.maxWidth)
-  .forEach(el => el.style.maxWidth = '');
+    .filter(el => !!el.style.maxWidth)
+    .forEach(el => el.style.maxWidth = '');
 
   // set style of target elements
   cols
-  .filter((el, i) => (i + 1) > startIndexOfProtrudedCol)
-  .forEach(el => el.style.maxWidth = `${maxWidth}px`);
+    .filter((el, i) => (i + 1) > startIndexOfProtrudedCol)
+    .forEach(el => el.style.maxWidth = `${maxWidth}px`);
 };
 
 module.exports = () => {
@@ -27,5 +26,5 @@ module.exports = () => {
   const fn = adjustGrid.bind(null, cols);
 
   fn();
-  window.addEventListener('resize', debounce(fn, 150));
+  window.addEventListener('resize', () => requestAnimationFrame(fn));
 };
