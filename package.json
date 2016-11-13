@@ -20,7 +20,6 @@
     "babelify": "^7.3.0",
     "bluebird": "^3.4.6",
     "browserify": "^13.1.1",
-    "del": "^2.2.2",
     "easyimage": "^2.1.0",
     "gh-pages": "^0.11.0",
     "lodash.sortby": "^4.7.0",

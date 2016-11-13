@@ -1,6 +1,7 @@
-$black: #222;
-$dark-gray: #aaa;
-$light-gray: #eee;
+$color-black: #222;
+$color-white: #eee;
+$color-gray: mix($color-black, $color-white);
+
 $font-stack-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
 @mixin truncate {
@@ -12,7 +13,7 @@ $font-stack-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 :root {
   font-family: $font-stack-ui;
   line-height: 1.5;
-  color: $black;
+  color: $color-black;
 }
 
 body {
@@ -26,15 +27,15 @@ a {
 
 .page-header {
   padding: 1rem;
-  color: $dark-gray;
-  background-color: $black;
+  color: $color-gray;
+  background-color: $color-black;
 
   &__title {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 1.2rem;
     font-weight: normal;
-    color: $light-gray;
+    color: $color-white;
   }
 
   &__desc {
@@ -93,8 +94,8 @@ a {
     box-sizing: border-box;
     font-size: .8rem;
     line-height: 1;
-    color: $light-gray;
-    background-color: rgba($black,.8);
+    color: $color-white;
+    background-color: rgba($color-black,.8);
     transition: opacity .5s;
   }
 }
