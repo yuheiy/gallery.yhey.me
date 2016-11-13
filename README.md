@@ -12,6 +12,12 @@
 - Node.js
 
 ```bash
-$ brew install imagemagick
-$ npm install
+brew install imagemagick
+npm install
+```
+
+## Cache generated images
+
+```bash
+cp -r dist/thumbnail/. .cache/
 ```

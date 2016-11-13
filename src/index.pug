@@ -1,0 +1,26 @@
+- var title = 'Website Gallery'
+
+doctype html
+html(lang="ja")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title= title
+    meta(name="description", content= `${list.length} websites are collected by Yuhei Yasuda.`)
+    link(rel="canonical", href="/")
+    link(rel="stylesheet", href="/main.css")
+    script(src="/main.js", defer)
+
+  body
+    header.page-header
+      h1.page-header__title= title
+      p.page-header__desc
+        = list.length
+        |  websites are collected by 
+        a(href="https://yuheiy.com/") Yuhei Yasuda.
+
+    ul.grid-list
+      each item in list
+        li(data-image= item.thumbnail)
+          a.grid-list__link(href= item.url)
+            p.grid-list__title= item.title

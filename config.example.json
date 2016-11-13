@@ -1,5 +1,5 @@
 {
-  "consumer_key": "",
-  "access_token": "",
-  "tag": ""
+  "consumerKey": "SET_CONSUMER_KEY",
+  "access_token": "SET_ACCESS_TOKEN",
+  "tag": "SET_TARGET_TAG"
 }
