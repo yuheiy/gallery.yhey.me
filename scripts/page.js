@@ -77,7 +77,7 @@ const fetchScreenShots = list => {
         .goto(url)
         .wait('body')
         .wait(3000)
-        .screenshot(tempPath)      
+        .screenshot(tempPath)
       )
       .then(() => easyimg.thumbnail({
         src: tempPath,
@@ -102,7 +102,9 @@ const fetchScreenShots = list => {
 }
 
 const copyFiles = list =>
-  Promise.map(list, ({destPath, cachePath}) => new Promise(done => ncp(cachePath, destPath, done)))
+  Promise.all(
+    list.map(({destPath, cachePath}) => new Promise(done => ncp(cachePath, destPath, done)))
+  )
 
 const fetchOrCopyImages = list => {
   list = Object.keys(list).map(key => {
