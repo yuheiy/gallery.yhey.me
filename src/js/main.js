@@ -2,8 +2,6 @@ import adjustGrid from './adjust-grid.js'
 import lazyLoading from './lazy-loading.js'
 import {debounce} from './utils.js'
 
-require('intersection-observer')
-
 {
   const list = document.querySelector('.grid-list')
   const fn = () => adjustGrid(list)

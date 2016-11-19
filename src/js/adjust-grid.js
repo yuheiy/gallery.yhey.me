@@ -1,7 +1,7 @@
 // adjust grid of flexbox
 
 const adjustGrid = list => {
-  const gridCols = list.children
+  const gridCols = list.querySelectorAll('li')
   const gridColCount = gridCols.length
   const windowWidth = window.innerWidth
   const minWidth = 320
