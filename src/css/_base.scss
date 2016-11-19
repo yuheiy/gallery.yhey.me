@@ -1,0 +1,27 @@
+:root {
+  font-family: $font-stack-ui;
+  line-height: 1.5;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+[data-image] {
+  opacity: 0;
+  transition: opacity .3s;
+
+  &.is-loaded {
+    // not yet implemented in the browser
+    // background-image: url(attr(data-image));
+
+    opacity: 1;
+  }
+}

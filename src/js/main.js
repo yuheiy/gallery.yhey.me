@@ -1,6 +1,6 @@
-import {debounce} from './utils.js'
 import adjustGrid from './adjust-grid.js'
 import lazyLoading from './lazy-loading.js'
+import {debounce} from './utils.js'
 
 require('intersection-observer')
 

@@ -92,7 +92,7 @@ const fetchScreenShots = list => {
       ]))
   }, Promise.resolve())
     .then(() => {
-      rimraf.sync('tmp/')
+      rimraf.sync('.tmp/')
       return nightmare.end()
     })
     .catch(err => {

@@ -1,11 +1,11 @@
-const preloadImage = url => new Promise(done => {
-  const preloader = new Image()
+const loadImage = src => new Promise(resolve => {
+  const image = new Image()
   const onLoad = () => {
-    preloader.removeEventListener('load', onLoad)
-    done()
+    image.removeEventListener('load', onLoad)
+    resolve(image)
   }
-  preloader.addEventListener('load', onLoad)
-  preloader.src = url
+  image.addEventListener('load', onLoad)
+  image.src = src
 })
 
 const intersectionObserver = new IntersectionObserver(changes => {
@@ -14,14 +14,12 @@ const intersectionObserver = new IntersectionObserver(changes => {
     .forEach(async ({target}) => {
       intersectionObserver.unobserve(target)
 
-      const url = target.dataset.image
-      await preloadImage(url)
-
-      target.style.backgroundImage = `url("${url}")`
-      target.style.opacity = 1
+      const {src} = await loadImage(target.dataset.image)
+      target.style.backgroundImage = `url("${src}")`
+      target.classList.add('is-loaded')
     })
 }, {
-  rootMargin: `25%`
+  rootMargin: '50%'
 })
 
 const lazyLoading = el => intersectionObserver.observe(el)
