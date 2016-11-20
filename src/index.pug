@@ -14,8 +14,8 @@ html(lang="ja")
 
   body
     header.page-header
-      h1.page-header__title= title
-      p.page-header__desc
+      h1= title
+      p
         = list.length
         |  websites are collected by 
         a(href="https://yuheiy.com/") Yuhei Yasuda.
@@ -23,5 +23,5 @@ html(lang="ja")
     ul.grid-list
       each item in list
         li(data-image= item.thumbnail)
-          a.grid-list__link(href= item.url)
-            p.grid-list__title= item.title
+          a(href= item.url)
+            p= item.title

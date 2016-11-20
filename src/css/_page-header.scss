@@ -3,7 +3,7 @@
   color: $color-gray;
   background-color: $color-black;
 
-  &__title {
+  h1 {
     margin-top: 0;
     margin-bottom: .25rem;
     font-size: 1.2rem;
@@ -11,7 +11,7 @@
     color: $color-white;
   }
 
-  &__desc {
+  p {
     margin-top: 0;
     margin-bottom: 0;
     font-size: .8rem;

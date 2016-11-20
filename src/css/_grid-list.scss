@@ -6,7 +6,7 @@
   padding-left: 0;
   list-style: none;
 
-  > li {
+  li {
     position: relative;
     flex-grow: 1;
     min-width: 320px;
@@ -16,13 +16,13 @@
     background-size: cover;
   }
 
-  > li::before {
+  li::before {
     content: "";
     display: block;
     padding-top: calc(100% * 9 / 16); // 16 : 9
   }
 
-  &__link {
+  a {
     position: absolute;
     top: 0;
     right: 0;
@@ -30,11 +30,11 @@
     left: 0;
   }
 
-  &__link:hover &__title {
+  a:hover p {
     opacity: 0;
   }
 
-  &__title {
+  p {
     @include truncate;
 
     position: absolute;
