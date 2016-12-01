@@ -12,7 +12,7 @@
     min-width: 320px;
     background-color: #fff;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-size: cover;
   }
 
@@ -24,24 +24,14 @@
 
   a {
     position: absolute;
-    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-  }
-
-  a:hover p {
-    opacity: 0;
   }
 
   p {
     @include truncate;
 
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    box-sizing: border-box;
     margin-top: 0;
     margin-bottom: 0;
     padding: .8em;
@@ -50,5 +40,11 @@
     color: $color-white;
     background-color: rgba($color-black, .8);
     transition: opacity .3s;
+  }
+
+  a:hover p,
+  a:active p,
+  a:focus p {
+    opacity: 0;
   }
 }
