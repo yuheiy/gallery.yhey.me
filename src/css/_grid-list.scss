@@ -16,22 +16,19 @@
     background-size: cover;
   }
 
-  li::before {
-    content: "";
+  a {
+    position: relative;
     display: block;
     padding-top: calc(100% * 9 / 16); // 16 : 9
-  }
-
-  a {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
   }
 
   p {
     @include truncate;
 
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
     margin-top: 0;
     margin-bottom: 0;
     padding: .8em;
