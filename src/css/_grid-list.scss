@@ -7,9 +7,8 @@
   list-style: none;
 
   li {
-    position: relative;
-    flex-grow: 1;
-    min-width: 320px;
+    flex: auto;
+    min-width: 20rem;
     background-color: #fff;
     background-repeat: no-repeat;
     background-position: center center;
@@ -36,7 +35,7 @@
     line-height: 1;
     color: $color-white;
     background-color: rgba($color-black, .8);
-    transition: opacity .3s;
+    transition: opacity .3s ease-out;
   }
 
   a:hover p,
