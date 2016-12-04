@@ -39,8 +39,7 @@ const renderHtml = list => {
     }))
 
   const result = pug.renderFile('src/index.pug', {
-    pretty: true,
-    list
+    list,
   })
 
   fs.writeFileSync('dist/index.html', result, 'utf8')
@@ -56,15 +55,13 @@ const fetchScreenShots = list => {
     width: 1920,
     height: 1080,
     loadTimeout: 10000,
-    show: true
   })
   const easyimg = require('easyimage')
   const width = 640
   const height = 360
   const gravity = 'North'
 
-  mkdirp.sync('.tmp/')
-  mkdirp.sync('.cache/')
+  ;['.tmp/', '.cache/'].forEach(dir => mkdirp.sync(dir))
 
   return list.reduce((seq, {
     url,
@@ -84,11 +81,11 @@ const fetchScreenShots = list => {
         dst: destPath,
         width,
         height,
-        gravity
+        gravity,
       }))
       .then(() => Promise.all([
         new Promise(done => ncp(destPath, cachePath, done)),
-        new Promise(done => rimraf(tempPath, done))
+        new Promise(done => rimraf(tempPath, done)),
       ]))
   }, Promise.resolve())
     .then(() => {
@@ -118,7 +115,7 @@ const fetchOrCopyImages = list => {
       fileName,
       destPath: `dist/thumbnail/${fileName}`,
       tempPath: `.tmp/${fileName}`,
-      cachePath: `.cache/${fileName}`
+      cachePath: `.cache/${fileName}`,
     }
   })
   const addedList = list.filter(({cachePath}) => !fs.existsSync(cachePath))
@@ -128,13 +125,13 @@ const fetchOrCopyImages = list => {
 
   return Promise.all([
     fetchScreenShots(addedList),
-    copyFiles(cachedList)
+    copyFiles(cachedList),
   ])
 }
 
 fetchList()
   .then(list => Promise.all([
     renderHtml(list),
-    fetchOrCopyImages(list)
+    fetchOrCopyImages(list),
   ]))
   .then(() => console.log('Finish'))
