@@ -1,22 +1,24 @@
 .grid-list {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
+  margin: (- $spacing-small) 0 0;
+  padding: 0;
   list-style: none;
+  font-size: ($ratio-text-small * 1rem);
+  color: $color-white;
 
   li {
     flex: auto;
+    max-width: calc(100% / var(--col-count-per-row));
     min-width: 20rem;
-    background-color: #fff;
+    margin: $spacing-small 0 0;
+    background-color: $color-black;
     background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
+    background-position: center top;
+    background-size: contain;
   }
 
   a {
-    position: relative;
     display: block;
     padding-top: calc(100% * 9 / 16); // 16 : 9
   }
@@ -24,23 +26,7 @@
   p {
     @include truncate;
 
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding: .8em;
-    font-size: .8rem;
-    line-height: 1;
-    color: $color-white;
-    background-color: rgba($color-black, .8);
-    transition: opacity .3s ease-out;
-  }
-
-  a:hover p,
-  a:active p,
-  a:focus p {
-    opacity: 0;
+    margin: 0;
+    padding: $spacing-minimal $spacing-small;
   }
 }

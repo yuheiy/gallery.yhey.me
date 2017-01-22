@@ -3,10 +3,8 @@
   "scripts": {
     "clean": "rm -rf dist/ && mkdir -p dist/",
     "page": "node scripts/page.js",
-    "css": "node-sass src/css/main.scss dist/main.css --output-style compressed",
-    "js:main": "browserify -t babelify src/js/main.js | uglifyjs -c -m > dist/main.js",
-    "js:polyfill": "uglifyjs node_modules/intersection-observer/intersection-observer.js -c -m > dist/polyfill.js",
-    "js": "npm-run-all -p js:*",
+    "css": "node-sass src/css/app.scss dist/app.css --output-style compressed",
+    "js": "NODE_ENV=production webpack --progress -p",
     "copy": "cp -r src/static/. dist/",
     "build": "npm-run-all clean -p page css js copy",
     "predeploy": "npm run build",
@@ -14,26 +12,26 @@
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",
-    "intersection-observer": "^0.1.1"
+    "intersection-observer": "^0.2.1"
   },
   "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-latest": "^6.16.0",
-    "babelify": "^7.3.0",
     "bluebird": "^3.4.6",
-    "browserify": "^13.1.1",
     "easyimage": "^2.1.0",
     "gh-pages": "^0.12.0",
     "lodash.sortby": "^4.7.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "nightmare": "^2.8.1",
-    "node-sass": "^3.13.0",
-    "npm-run-all": "^3.1.2",
+    "node-sass": "^4.3.0",
+    "npm-run-all": "^4.0.1",
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
     "rimraf": "^2.5.4",
-    "uglify-js": "^2.7.5"
+    "webpack": "^2.2.0"
   },
   "engines": {
     "node": ">=6.0.0"

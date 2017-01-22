@@ -8,17 +8,17 @@ html(lang="ja")
     title= title
     meta(name="description", content= `${list.length} websites are collected by Yuhei Yasuda.`)
     link(rel="canonical", href="/")
-    link(rel="stylesheet", href="/main.css")
-    script(src="/polyfill.js", defer)
-    script(src="/main.js", defer)
+    link(rel="stylesheet", href="/app.css")
+    script(src="/app.js", defer)
 
   body
     header.page-header
       h1= title
       p
         = list.length
-        |  websites are collected by 
-        a(href="https://yuheiy.com/") Yuhei Yasuda.
+        |  websites are collected by
+        a(href="https://yuheiy.com/") Yuhei Yasuda
+        | .
 
     ul.grid-list
       each item in list

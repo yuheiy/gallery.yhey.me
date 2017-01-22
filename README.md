@@ -2,7 +2,7 @@
 
 ## Setup
 
-1. `$ cp config.example.json config.json`
+1. `cp config.example.json config.json`
 1. edit config.json
 1. set [pocket](https://getpocket.com/) key
 

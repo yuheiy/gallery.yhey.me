@@ -1,11 +1,11 @@
-const loadImage = src => new Promise(resolve => {
+const loadImage = imagePath => new Promise(resolve => {
   const image = new Image()
   const onLoad = () => {
     image.removeEventListener('load', onLoad)
     resolve(image)
   }
   image.addEventListener('load', onLoad)
-  image.src = src
+  image.src = imagePath
 })
 
 const intersectionObserver = new IntersectionObserver(changes => {
