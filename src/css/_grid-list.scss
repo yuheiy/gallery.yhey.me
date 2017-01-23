@@ -1,18 +1,16 @@
 .grid-list {
   display: flex;
   flex-wrap: wrap;
-  margin: (- $spacing-small) 0 0;
+  margin: (- $spacing-large) 0 0;
   padding: 0;
   list-style: none;
   font-size: ($ratio-text-small * 1rem);
-  color: $color-white;
 
   li {
     flex: auto;
     max-width: calc(100% / var(--col-count-per-row));
     min-width: 20rem;
-    margin: $spacing-small 0 0;
-    background-color: $color-black;
+    margin: $spacing-large 0 0;
     background-repeat: no-repeat;
     background-position: center top;
     background-size: contain;

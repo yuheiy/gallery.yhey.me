@@ -1,12 +1,12 @@
 :root {
   font-family: $font-stack-ui;
   line-height: $line-height;
-  color: $color-black;
-  background-color: $color-white;
 }
 
 body {
   margin: 0;
+  color: $color-black;
+  background-color: $color-white;
 }
 
 a {

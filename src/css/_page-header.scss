@@ -1,17 +1,15 @@
 .page-header {
-  padding: $spacing-small;
-  color: $color-gray;
-  background-color: $color-black;
+  padding: $spacing-large $spacing-small;
 
   h1 {
     margin: 0 0 $spacing-minimal;
     font-size: ($ratio-text-large * 1rem);
     font-weight: normal;
-    color: $color-white;
   }
 
   p {
     margin: 0;
     font-size: ($ratio-text-small * 1rem);
+    color: $color-gray;
   }
 }
