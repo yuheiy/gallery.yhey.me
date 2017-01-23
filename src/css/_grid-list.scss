@@ -24,7 +24,6 @@
   p {
     @include truncate;
 
-    margin: 0;
-    padding: $spacing-minimal $spacing-small;
+    margin: $spacing-minimal $spacing-small;
   }
 }
