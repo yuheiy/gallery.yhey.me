@@ -25,6 +25,6 @@
   p {
     @include truncate;
 
-    margin: $spacing-small 0;
+    margin: $spacing-small 0 0;
   }
 }
