@@ -5,6 +5,7 @@
 
 body {
   margin: 0;
+  font-size: percentage($ratio-text);
   color: $color-black;
   background-color: $color-white;
 }
@@ -18,7 +19,7 @@ a {
   opacity: 0;
   transition: opacity .8s ease-out;
 
-  &.is-loaded {
+  &[data-loaded="true"] {
     // not yet implemented in the browser
     // background-image: url(attr(data-image));
 

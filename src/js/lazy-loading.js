@@ -16,7 +16,7 @@ const intersectionObserver = new IntersectionObserver(changes => {
 
       const {src} = await loadImage(target.dataset.image)
       target.style.backgroundImage = `url("${src}")`
-      target.classList.add('is-loaded')
+      target.dataset.loaded = 'true'
     })
 }, {
   rootMargin: '50%'

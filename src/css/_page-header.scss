@@ -1,15 +1,14 @@
 .page-header {
-  margin: $spacing-large $spacing-small;
+  margin: $spacing-large $spacing;
 
   h1 {
-    margin: 0 0 $spacing-minimal;
-    font-size: ($ratio-text-large * 1rem);
+    margin: 0 0 $spacing-small;
     font-weight: normal;
+    font-size: ($ratio-text-large * 1rem);
   }
 
   p {
     margin: 0;
-    font-size: ($ratio-text-small * 1rem);
     color: $color-gray;
   }
 }
