@@ -7,7 +7,7 @@ $line-height: $ratio;
 
 $spacing: ($ratio-text * 1rem);
 $spacing-small: ($spacing / $ratio / $ratio);
-$spacing-large: ($spacing * $ratio * $ratio);
+$spacing-large: ($spacing * $ratio * $ratio * $ratio);
 
 $width-grid-item: 20rem;
 
