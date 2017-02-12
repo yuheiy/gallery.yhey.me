@@ -20,8 +20,8 @@ html(lang="ja")
         a(href="https://yuheiy.com/") Yuhei Yasuda
         | .
 
-    ul.grid-list
-      each item in list
-        li(data-image= item.thumbnail)
-          a(href= item.url)
-            p= item.title
+    section
+      ul.grid-list
+        each item in list
+          li(data-image= item.thumbnail)
+            a(href= item.url)= item.title

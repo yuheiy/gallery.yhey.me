@@ -2,29 +2,25 @@
   display: flex;
   flex-wrap: wrap;
   margin: 0;
-  padding: 0;
+  padding-left: 0;
   list-style-type: none;
 
   li {
     flex: auto;
-    max-width: calc(100% / var(--col-count-per-row));
     min-width: $width-grid-item;
-    margin: 0 0 $spacing-large;
+    max-width: calc(100% / var(--col-count-per-row));
+    margin-bottom: $spacing-large;
     background-repeat: no-repeat;
     background-position: center top;
     background-size: contain;
   }
 
   a {
-    display: block;
-    padding-top: calc(100% * 9 / 16); // 16 : 9
-    padding-right: $spacing;
-    padding-left: $spacing;
-  }
-
-  p {
     @include truncate;
 
-    margin: $spacing-small 0 0;
+    display: block;
+    padding-top: calc((100% * 9 / 16) + #{$spacing-small});
+    padding-right: $spacing;
+    padding-left: $spacing;
   }
 }
