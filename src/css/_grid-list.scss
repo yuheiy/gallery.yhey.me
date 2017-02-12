@@ -10,9 +10,6 @@
     min-width: $width-grid-item;
     max-width: calc(100% / var(--col-count-per-row));
     margin-bottom: $spacing-large;
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: contain;
   }
 
   a {
@@ -22,5 +19,8 @@
     padding-top: calc((100% * 9 / 16) + #{$spacing-small});
     padding-right: $spacing;
     padding-left: $spacing;
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: contain;
   }
 }

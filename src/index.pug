@@ -23,5 +23,5 @@ html(lang="ja")
     section
       ul.grid-list
         each item in list
-          li(data-image= item.thumbnail)
-            a(href= item.url)= item.title
+          li
+            a(href= item.url, data-image= item.thumbnail)= item.title
