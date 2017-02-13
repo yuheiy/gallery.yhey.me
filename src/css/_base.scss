@@ -1,11 +1,11 @@
 :root {
-  font-family: $font-stack-ui;
+  font-family: $font-stack-system-ui;
+  font-size: percentage($ratio-text-root);
   line-height: $line-height;
 }
 
 body {
   margin: 0;
-  font-size: ($ratio-text * 1rem);
   color: $color-black;
   background-color: $color-white;
 }
