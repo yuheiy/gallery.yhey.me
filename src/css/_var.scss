@@ -10,7 +10,7 @@ $spacing: ($ratio-text * 1rem);
 $spacing-small: ($spacing / $ratio / $ratio);
 $spacing-large: ($spacing * $ratio * $ratio * $ratio);
 
-$width-grid-item: 20rem;
+$width-grid-item: 320px;
 
 $color-black: hsl(0, 0%, 25%);
 $color-white: hsl(0, 0%, 99%);
