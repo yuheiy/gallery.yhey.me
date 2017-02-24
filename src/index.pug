@@ -17,11 +17,11 @@ html(lang="ja")
       p
         = list.length
         |  websites are collected by 
-        a(href="https://yuheiy.com/") Yuhei Yasuda
+        a(rel="author", href="https://yuheiy.com/") Yuhei Yasuda
         | .
 
     section
-      ul.grid-list
+      ul.grid-list(role="directory")
         each item in list
           li
             a(href= item.url, data-image= item.thumbnail)= item.title
