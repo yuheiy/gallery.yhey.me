@@ -14,9 +14,9 @@ const intersectionObserver = new IntersectionObserver(changes => {
     .forEach(async ({target}) => {
       intersectionObserver.unobserve(target)
 
-      const {src} = await loadImage(target.dataset.image)
+      const {src} = await loadImage(target.dataset.backgroundImage)
       target.style.backgroundImage = `url("${src}")`
-      target.dataset.loaded = 'true'
+      target.dataset.loaded = true
     })
 }, {
   rootMargin: '50%'

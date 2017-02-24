@@ -24,4 +24,4 @@ html(lang="ja")
       ul.grid-list(role="directory")
         each item in list
           li
-            a(href= item.url, data-image= item.thumbnail)= item.title
+            a.js-lazy-loading(href= item.url, data-background-image= item.thumbnail)= item.title

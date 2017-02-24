@@ -11,7 +11,7 @@ import {debounce} from './utils.js'
 }
 
 {
-  for (const el of document.querySelectorAll('[data-image]')) {
+  for (const el of document.querySelectorAll('.js-lazy-loading')) {
     lazyLoading(el)
   }
 }

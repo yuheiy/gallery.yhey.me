@@ -13,6 +13,7 @@
 
   a {
     @include truncate;
+    @include lazy-loading;
 
     display: block;
     padding-top: calc((100% * 9 / 16) + #{$spacing-small});
