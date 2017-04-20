@@ -1,13 +1,11 @@
 .grid-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(var(--col-count-per-row), auto);
   margin: 0;
   padding-left: 0;
 
   li {
-    flex: auto;
-    min-width: $width-grid-item;
-    max-width: calc(100% / var(--col-count-per-row));
+    min-width: 0;
     margin-bottom: $spacing-large;
   }
 

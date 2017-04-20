@@ -2,6 +2,7 @@ $ratio: 1.5;
 
 $ratio-text: 1;
 $ratio-text-large: ($ratio-text * $ratio);
+
 $ratio-text-root: (14 / 16);
 
 $line-height: $ratio;
@@ -9,8 +10,6 @@ $line-height: $ratio;
 $spacing: ($ratio-text * 1rem);
 $spacing-small: ($spacing / $ratio / $ratio);
 $spacing-large: ($spacing * $ratio * $ratio * $ratio);
-
-$width-grid-item: 320px;
 
 $color-black: hsl(0, 0%, 25%);
 $color-white: hsl(0, 0%, 99%);
